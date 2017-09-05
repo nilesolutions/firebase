@@ -3,6 +3,7 @@
         "kreait/firebase-php": "^1.1",
         "lcobucci/jwt": "^3.2",
         "guzzlehttp/guzzle": "^6.2.1",
-        "kreait/firebase-tokens": "^1.1.1"
+        "kreait/firebase-tokens": "^1.1.1",
+        "fig/http-message-util": "^1.1"
     }
 }

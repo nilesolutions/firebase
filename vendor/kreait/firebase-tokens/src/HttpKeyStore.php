@@ -21,7 +21,9 @@ final class HttpKeyStore implements KeyStore
 
     public function __construct(ClientInterface $client = null)
     {
-        $this->client = $client ?? new Client();
+        if (!$client)
+            $client= new Client();
+        $this->client = $client;
     }
 
     public function get($keyId)

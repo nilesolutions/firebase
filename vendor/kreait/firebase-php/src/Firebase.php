@@ -16,6 +16,7 @@ use Ivory\HttpAdapter\HttpAdapterInterface;
 use Ivory\HttpAdapter\Message\RequestInterface;
 use Ivory\HttpAdapter\Message\ResponseInterface;
 use Kreait\Firebase\Exception\FirebaseException;
+use Firebase\Auth\Token\Handler as TokenHandler;
 
 class Firebase implements FirebaseInterface
 {
@@ -57,6 +58,11 @@ class Firebase implements FirebaseInterface
     private $http;
 
     /**
+     * @var TokenHandler
+     */
+    private $tokenHandler;
+
+    /**
      * Firebase client initialization.
      *
      * @param string                 $baseUrl       The Firebase app base URL.
@@ -70,6 +76,27 @@ class Firebase implements FirebaseInterface
         $this->configuration = $configuration ?: new Configuration();
 
         $this->http = $this->configuration->getHttpAdapter();
+        /*@todo get from json*/
+        $tokenHandler=new TokenHandler(
+            $serviceAccount->getProjectId(),
+            $serviceAccount->getClientEmail(),
+            $serviceAccount->getPrivateKey()
+         );
+        $this->tokenHandler = $tokenHandler;
+    }
+
+    /**
+     * Returns a Token Handler to be used for creating Custom Tokens and
+     * verifying ID tokens.
+     *
+     * @see https://firebase.google.com/docs/auth/admin/create-custom-tokens
+     * @see https://firebase.google.com/docs/auth/admin/verify-id-tokens
+     *
+     * @return TokenHandler
+     */
+    public function getTokenHandler()
+    {
+        return $this->tokenHandler;
     }
 
     /**
